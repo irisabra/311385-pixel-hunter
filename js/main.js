@@ -12,15 +12,14 @@
   // Rules
   let rulesElement = loadTemplate('rules');
   let rulesInput = rulesElement.querySelector('.rules__input');
+  let rulesSubmit = rulesElement.querySelector('.rules__button');
 
   rulesInput.oninput =  () => {
-    let rulesSubmit = rulesElement.querySelector('.rules__button');
     if (rulesInput.value) {
       rulesSubmit.removeAttribute('disabled');
     } else {
       rulesSubmit.setAttribute('disabled', '');
     }
-    return;
   };
 
   // Slides changer
@@ -49,7 +48,6 @@
     current = index;
     mainElement.innerHTML = '';
     mainElement.appendChild(slides[index]);
-    return;
   };
 
   document.querySelector('.next').onclick = function (e) {
