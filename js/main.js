@@ -1,66 +1,49 @@
-(function () {
+import introElement from './intro';
+import greetingElement from './greeting';
+import rulesElement from './rules';
+import gameOneElement from './game-1';
+import gameTwoElement from './game-2';
+import gameThreeElement from './game-3';
+import statsElement from './stats';
 
-  let loadTemplate = (templateName) => {
-    let node = document.createElement('span');
-    let template = document.getElementById(templateName);
-    let content = template.content ? template.content : template;
-    node.appendChild(content);
-    return node.cloneNode(true);
-  };
+// Slides changer
 
+const mainElement = document.getElementById('main');
 
-  // Rules
-  let rulesElement = loadTemplate('rules');
-  let rulesInput = rulesElement.querySelector('.rules__input');
-  let rulesSubmit = rulesElement.querySelector('.rules__button');
+const switcher = document.createElement('div');
+switcher.innerHTML = '' +
+'<span class="prev"><img src="img/arrow_left.svg" alt="Left" width="50" height="50"></span>   ' +
+'<span class="next"><img src="img/arrow_right.svg" alt="Right" width="50" height="50"></span>';
+switcher.style.cssText = 'text-align: center';
+mainElement.after(switcher);
 
-  rulesInput.oninput = () => {
-    if (rulesInput.value) {
-      rulesSubmit.removeAttribute('disabled');
-    } else {
-      rulesSubmit.setAttribute('disabled', '');
-    }
-  };
+const slides = [
+  introElement,
+  greetingElement,
+  rulesElement,
+  gameOneElement,
+  gameTwoElement,
+  gameThreeElement,
+  statsElement
+];
+let current = -1;
 
-  // Slides changer
+const select = (index) => {
+  current = index;
+  mainElement.innerHTML = '';
+  mainElement.appendChild(slides[index]);
+};
 
-  let mainElement = document.getElementById('main');
+document.querySelector('.next').onclick = (e) => {
+  e.preventDefault();
 
-  let switcher = document.createElement('div');
-  switcher.innerHTML = '' +
-    '<span class="prev"><img src="img/arrow_left.svg" alt="Left" width="50" height="50"></span>   ' +
-    '<span class="next"><img src="img/arrow_right.svg" alt="Right" width="50" height="50"></span>';
-  switcher.style.cssText = 'text-align: center';
-  mainElement.after(switcher);
+  select(current + 1);
+};
 
-  let slides = [
-    loadTemplate('intro'),
-    loadTemplate('greeting'),
-    rulesElement,
-    loadTemplate('game-1'),
-    loadTemplate('game-2'),
-    loadTemplate('game-3'),
-    loadTemplate('stats')
-  ];
-  let current = -1;
+document.querySelector('.prev').onclick = (e) => {
+  e.preventDefault();
 
-  let select = (index) => {
-    current = index;
-    mainElement.innerHTML = '';
-    mainElement.appendChild(slides[index]);
-  };
+  select(current - 1);
+};
 
-  document.querySelector('.next').onclick = (e) => {
-    e.preventDefault();
-
-    select(current + 1);
-  };
-
-  document.querySelector('.prev').onclick = (e) => {
-    e.preventDefault();
-
-    select(current - 1);
-  };
-
-  select(0);
-})();
+select(0);
