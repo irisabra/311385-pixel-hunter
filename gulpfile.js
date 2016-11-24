@@ -13,6 +13,7 @@ const rename = require('gulp-rename');
 const imagemin = require('gulp-imagemin');
 const babel = require('gulp-babel');
 const sourcemaps = require('gulp-sourcemaps');
+const webpack = require('gulp-webpack');
 
 
 gulp.task('style', function () {
@@ -41,11 +42,18 @@ gulp.task('style', function () {
 gulp.task('scripts', function () {
   return gulp.src('js/**/*.js')
     .pipe(plumber())
-    .pipe(sourcemaps.init())
-    .pipe(babel({
-            presets: ['es2015']
-        }))
-    .pipe(sourcemaps.write('.'))
+    .pipe(webpack({
+      devtools: 'source-map',
+      module: {
+        loaders: [
+          { test: /\.js$/, loader: 'babel-loader' },
+        ],
+      },
+      output:{
+        filename: 'main.js'
+      }
+
+  }))
     .pipe(gulp.dest('build/js/'));
 });
 
