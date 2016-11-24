@@ -1,4 +1,6 @@
+import gameThreeElement from './game-3';
 import getElementFromTemplate from './getElementFromTemplate';
+import renderScreen from './renderScreen';
 
 const gameTwoElement = getElementFromTemplate(`  <header class="header">
     <div class="header__back">
@@ -44,5 +46,14 @@ const gameTwoElement = getElementFromTemplate(`  <header class="header">
       </ul>
     </div>
   </div>`);
+
+const answers = gameTwoElement.querySelectorAll('.game__answer');
+
+for (const answer of answers) {
+  answer.onclick = (e) => {
+    e.preventDefault();
+    renderScreen(gameThreeElement);
+  };
+}
 
 export default gameTwoElement;
