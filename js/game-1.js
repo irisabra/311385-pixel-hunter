@@ -58,13 +58,15 @@ const gameOneElement = getElementFromTemplate(`  <header class="header">
 </div>
 </div>`);
 
-const answers = gameOneElement.querySelectorAll('.game__answer');
+const answersBlock = gameOneElement.querySelector('.game__content');
 
-for (const answer of answers) {
-  answer.onclick = (e) => {
-    e.preventDefault();
-    renderScreen(gameTwoElement);
-  };
-}
+answersBlock.onclick = (e) => {
+  e.preventDefault();
+  const answer = e.target.closest('.game__answer');
+  if (!answer) {
+    return;
+  }
+  renderScreen(gameTwoElement);
+};
 
 export default gameOneElement;

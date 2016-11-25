@@ -46,14 +46,16 @@ const gameThreeElement = getElementFromTemplate(`  <header class="header">
 </div>`);
 
 
-const answers = gameThreeElement.querySelectorAll('.game__option');
+const answersBlock = gameThreeElement.querySelector('.game__content');
 
-for (const answer of answers) {
-  answer.onclick = (e) => {
-    e.preventDefault();
-    renderScreen(statsElement);
-  };
-}
+answersBlock.onclick = (e) => {
+  e.preventDefault();
+  const answer = e.target.closest('.game__option');
+  if (!answer) {
+    return;
+  }
+  renderScreen(statsElement);
+};
 
 
 export default gameThreeElement;
