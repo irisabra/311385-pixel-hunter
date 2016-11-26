@@ -61,12 +61,11 @@ const gameOneElement = getElementFromTemplate(`  <header class="header">
 const answersBlock = gameOneElement.querySelector('.game__content');
 
 answersBlock.onclick = (e) => {
-  e.preventDefault();
   const answer = e.target.closest('.game__answer');
-  if (!answer) {
-    return;
+  if (answer) {
+    e.preventDefault();
+    renderScreen(gameTwoElement);
   }
-  renderScreen(gameTwoElement);
 };
 
 export default gameOneElement;

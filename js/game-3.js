@@ -49,12 +49,11 @@ const gameThreeElement = getElementFromTemplate(`  <header class="header">
 const answersBlock = gameThreeElement.querySelector('.game__content');
 
 answersBlock.onclick = (e) => {
-  e.preventDefault();
-  const answer = e.target.closest('.game__option');
-  if (!answer) {
-    return;
+  const answer = e.target.closest('.game__answer');
+  if (answer) {
+    e.preventDefault();
+    renderScreen(statsElement);
   }
-  renderScreen(statsElement);
 };
 
 
