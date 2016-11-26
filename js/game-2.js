@@ -1,4 +1,6 @@
+import gameThreeElement from './game-3';
 import getElementFromTemplate from './getElementFromTemplate';
+import renderScreen from './renderScreen';
 
 const gameTwoElement = getElementFromTemplate(`  <header class="header">
     <div class="header__back">
@@ -43,6 +45,16 @@ const gameTwoElement = getElementFromTemplate(`  <header class="header">
         <li class="stats__result stats__result--unknown"></li>
       </ul>
     </div>
-  </div>`);
+    </div>`);
+
+const answersBlock = gameTwoElement.querySelector('.game__content');
+
+answersBlock.onclick = (e) => {
+  const answer = e.target.closest('.game__answer');
+  if (answer) {
+    e.preventDefault();
+    renderScreen(gameThreeElement);
+  }
+};
 
 export default gameTwoElement;

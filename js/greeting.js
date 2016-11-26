@@ -1,3 +1,5 @@
+import rulesElement from './rules';
+import renderScreen from './renderScreen';
 import getElementFromTemplate from './getElementFromTemplate';
 
 const greetingElement = getElementFromTemplate(`<div class="greeting  central--blur">
@@ -13,5 +15,12 @@ const greetingElement = getElementFromTemplate(`<div class="greeting  central--b
   </div>
   <div class="greeting__continue"><span><img src="img/arrow_right.svg" width="64" height="64" alt="Next"></span></div>
 </div>`);
+
+const continueButton = greetingElement.querySelector('.greeting__continue');
+
+continueButton.onclick = (e) => {
+  e.preventDefault();
+  renderScreen(rulesElement);
+};
 
 export default greetingElement;

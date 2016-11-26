@@ -1,4 +1,6 @@
+import gameOneElement from './game-1';
 import getElementFromTemplate from './getElementFromTemplate';
+import renderScreen from './renderScreen';
 
 const rulesElement = getElementFromTemplate(`<header class="header">
 <div class="header__back">
@@ -34,6 +36,11 @@ rulesInput.oninput = () => {
   } else {
     rulesSubmit.setAttribute('disabled', '');
   }
+};
+
+rulesSubmit.onclick = (e) => {
+  e.preventDefault();
+  renderScreen(gameOneElement);
 };
 
 export default rulesElement;
