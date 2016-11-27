@@ -79,19 +79,19 @@ export const gameThreeData = {
   task: 'Найдите рисунок среди изображений',
   images: [
     {
-      image: 'http://placehold.it/304x455',
+      path: 'http://placehold.it/304x455',
       width: 304,
       height: 455,
       description: 'Option 1'
     },
     {
-      image: 'http://placehold.it/304x455',
+      path: 'http://placehold.it/304x455',
       width: 304,
       height: 455,
       description: 'Option 2'
     },
     {
-      image: 'http://placehold.it/304x455',
+      path: 'http://placehold.it/304x455',
       width: 304,
       height: 455,
       description: 'Option 3'
