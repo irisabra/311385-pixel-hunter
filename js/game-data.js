@@ -3,34 +3,28 @@ export const livesData = ['empty', 'full', 'full'];
 
 export const gameOneData = {
   task: 'Угадайте для каждого изображения фото или рисунок?',
-  questions: [
+  images: [
     {
-      image: 'http://placehold.it/468x458',
+      path: 'http://placehold.it/468x458',
       description: 'Option 1',
-      answers: [
-        {
-          text: 'Фото',
-          value: 'photo'
-        },
-        {
-          text: 'Рисунок',
-          value: 'paint'
-        }
-      ]
+      width: 468,
+      height: 458
     },
     {
-      image: 'http://placehold.it/468x458',
+      path: 'http://placehold.it/468x458',
       description: 'Option 2',
-      answers: [
-        {
-          text: 'Фото',
-          value: 'photo'
-        },
-        {
-          text: 'Рисунок',
-          value: 'paint'
-        }
-      ]
+      width: 468,
+      height: 458,
+    }
+  ],
+  answers: [
+    {
+      text: 'Фото',
+      value: 'photo'
+    },
+    {
+      text: 'Рисунок',
+      value: 'paint'
     }
   ],
   stats: [
@@ -49,20 +43,22 @@ export const gameOneData = {
 
 export const gameTwoData = {
   task: 'Угадай, фото или рисунок?',
-  questions: [
+  images: [
     {
-      image: 'http://placehold.it/705x455',
+      path: 'http://placehold.it/705x455',
       description: 'Option 1',
-      answers: [
-        {
-          text: 'Фото',
-          value: 'photo'
-        },
-        {
-          text: 'Рисунок',
-          value: 'paint'
-        }
-      ]
+      width: 705,
+      height: 455
+    }
+  ],
+  answers: [
+    {
+      text: 'Фото',
+      value: 'photo'
+    },
+    {
+      text: 'Рисунок',
+      value: 'paint'
     }
   ],
   stats: [
@@ -81,20 +77,27 @@ export const gameTwoData = {
 
 export const gameThreeData = {
   task: 'Найдите рисунок среди изображений',
-  answers: [
+  images: [
     {
-      image: 'http://placehold.it/468x458',
+      image: 'http://placehold.it/304x455',
+      width: 304,
+      height: 455,
       description: 'Option 1'
     },
     {
-      image: 'http://placehold.it/468x458',
+      image: 'http://placehold.it/304x455',
+      width: 304,
+      height: 455,
       description: 'Option 2'
     },
     {
-      image: 'http://placehold.it/468x458',
+      image: 'http://placehold.it/304x455',
+      width: 304,
+      height: 455,
       description: 'Option 3'
     }
   ],
+  answers: [],
   stats: [
     'wrong',
     'slow',

@@ -1,3 +1,5 @@
+import {timerData, livesData} from './game-data';
+
 const headerTemplate = (timer, lives) =>`<header class="header">
   <div class="header__back">
     <span class="back">
@@ -11,4 +13,4 @@ const headerTemplate = (timer, lives) =>`<header class="header">
   </div>
 </header>`;
 
-export default headerTemplate;
+export default headerTemplate(timerData, livesData);
