@@ -1,5 +1,4 @@
-const questionsTemplate = (images, answers) => `
-${images.map((image, index) =>
+const questionsTemplate = (images, answers) => images.map((image, index) =>
   `<div class="game__option">
     <img src="${image.path}" alt="${image.description}" width="${image.width}" height="${image.height}">
     ${answers.map((answer) => `
@@ -8,7 +7,6 @@ ${images.map((image, index) =>
       <span>${answer.text}</span>
     </label>`).join('')}
   </div>`
-).join('')}
-`;
+).join('');
 
 export default questionsTemplate;
