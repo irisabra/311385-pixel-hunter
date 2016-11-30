@@ -1,8 +1,9 @@
 import getElementFromTemplate from './getElementFromTemplate';
-import {statsData} from './game-data';
+import {headerBack} from './header-back';
 
-const statsTemplate = (data) => `
-  <div class="result">
+export default (data) => {
+
+  const content = `<div class="result">
     <h1>${data.status}</h1>
     ${data.gameResults.map((result) => `
       <table class="result__table">
@@ -31,14 +32,7 @@ const statsTemplate = (data) => `
       `).join('')}
   </div>`;
 
-const headerTemplate = () =>`<header class="header">
-    <div class="header__back">
-      <span class="back">
-        <img src="img/arrow_left.svg" width="45" height="45" alt="Back">
-        <img src="img/logo_small.png" width="101" height="44">
-      </span>
-    </div>`;
+  const article = `<header class="header">${headerBack}</header> ${content}`;
 
-const statsElement = getElementFromTemplate(`${headerTemplate()} ${statsTemplate(statsData)}`);
-
-export default statsElement;
+  return getElementFromTemplate(article);
+};

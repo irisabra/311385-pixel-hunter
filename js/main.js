@@ -1,4 +1,5 @@
-import introElement from './intro';
+import getIntroElement from './intro';
 import renderScreen from './renderScreen';
+import {introData} from './game-data';
 
-renderScreen(introElement);
+renderScreen(getIntroElement(introData));
