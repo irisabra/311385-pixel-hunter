@@ -6,46 +6,45 @@ import gameStatsTemplate from './game-stats';
 import questionsTemplate from './game-questions';
 import getStatsElement from './stats';
 
-let i = 0;
 
-const getGameElement = (data) => {
+const getGameElement = (data, index) => {
 
-  const levelType = data[i].type;
+  const levelType = data[index].type;
 
-  const levelContent = (levelData, type) => {
-    let content = '';
-    switch (type) {
-      case 'game-1':
-        content = `<form class="game__content">${questionsTemplate(levelData.images, levelData.answers)}</form>`;
-        break;
-      case 'game-2':
-        content = `<form class="game__content game__content--wide">${questionsTemplate(levelData.images, levelData.answers)}</form>`;
-        break;
-      case 'game-3':
-        content = `<form class="game__content game__content--triple">${questionsTemplate(levelData.images, levelData.answers)}</form>`;
-        break;
-    }
-    return content;
+  const getLevelContent = (levelData, type) => {
+
+    const levelContent = {
+      'game-1': `<form class="game__content">${questionsTemplate(levelData.images, levelData.answers)}</form>`,
+      'game-2': `<form class="game__content game__content--wide">${questionsTemplate(levelData.images, levelData.answers)}</form>`,
+      'game-3': `<form class="game__content game__content--triple">${questionsTemplate(levelData.images, levelData.answers)}</form>`
+    };
+
+    return levelContent[type];
   };
 
-  const article = (levelData) => `${header}
+  const getArticle = (levelData) => `${header}
   <div class="game">
   <p class="game__task">${levelData.task}</p>
-  ${levelContent(levelData, levelType)}
+  ${getLevelContent(levelData, levelType)}
   ${gameStatsTemplate(levelData.stats)}
   </div>`;
 
-  const gameLevelElement = getElementFromTemplate(article(data[i]));
+  const gameLevelElement = getElementFromTemplate(getArticle(data[index]));
 
   const answersBlock = gameLevelElement.querySelector('.game__content');
+  const answerElementClass = {
+    'game-1': 'game__answer',
+    'game-2': 'game__answer',
+    'game-3': 'game__option'
+  };
 
   answersBlock.onclick = (e) => {
-    const answer = (levelType === 'game-3' ? e.target.closest('.game__option') : e.target.closest('.game__answer'));
+    const answer = e.target.closest(`.${answerElementClass[levelType]}`);
     if (answer) {
       e.preventDefault();
-      i++;
-      if (i < data.length) {
-        renderScreen(getGameElement(data));
+      index++;
+      if (index < data.length) {
+        renderScreen(getGameElement(data, index));
       } else {
         renderScreen(getStatsElement(statsData));
       }

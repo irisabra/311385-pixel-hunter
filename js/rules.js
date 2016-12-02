@@ -30,7 +30,7 @@ export default (data) => {
 
   rulesSubmit.onclick = (e) => {
     e.preventDefault();
-    renderScreen(getGameElement(gameData));
+    renderScreen(getGameElement(gameData, 0));
   };
 
   return rulesElement;
