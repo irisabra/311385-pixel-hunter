@@ -1,9 +1,9 @@
 const questionsTemplate = (images, answers) => images.map((image, index) =>
-  `<div class="game__option">
+  `<div class="game__option" data-type="${image.mediaType}">
     <img src="${image.path}" alt="${image.description}" width="${image.width}" height="${image.height}">
     ${answers.map((answer) => `
     <label class="game__answer game__answer--${answer.value}">
-      <input name="question${index}" type="radio" value="${answer.value}">
+      <input name="question-${index}" type="radio" value="${answer.value}">
       <span>${answer.text}</span>
     </label>`).join('')}
   </div>`

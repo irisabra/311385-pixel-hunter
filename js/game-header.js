@@ -1,13 +1,13 @@
-import {timerData, livesData} from './game-data';
 import {headerBack} from './header-back';
 
-
-const headerTemplate = `<header class="header">
+export const getHeader = (time, lives) => `
   ${headerBack}
-  <h1 class="game__timer">${timerData}</h1>
+  <h1 class="game__timer">${time}</h1>
   <div class="game__lives">
-    ${livesData.map((item) =>`<img src="img/heart__${item}.svg" class="game__heart" alt="Life" width="32" height="32">`).join('')}
-  </div>
-</header>`;
+    ${Array.from(new Array(3), (item, index) =>`<img src="img/heart__${(index < lives ? 'full' : 'empty')}.svg" class="game__heart" alt="Life" width="32" height="32">`).reverse().join('')}
+  </div>`;
 
-export default headerTemplate;
+export const updateHeader = (template) => {
+  const header = document.querySelector('.header');
+  header.innerHTML = template;
+};
