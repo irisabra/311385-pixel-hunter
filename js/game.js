@@ -6,7 +6,7 @@ import {getHeader, updateHeader} from './game-header';
 import gameStatsTemplate from './game-stats';
 import questionsTemplate from './game-questions';
 import getStatsElement from './stats';
-import {setTime, setLives, setLevel, setAnswer, gameIsOver, checkAnswerSpeed} from './data/game-utils';
+import {setTime, setLives, setLevel, setAnswer, isGameOver, checkAnswerSpeed} from './data/game-utils';
 
 let interval = null;
 
@@ -20,7 +20,7 @@ const changeLevel = (data, answerType) => {
 
   data = setLevel(data, data.level + 1 );
   clearInterval(interval);
-  if (data.level < data.questions.length && !gameIsOver(data)) {
+  if (data.level < data.questions.length && !isGameOver(data)) {
     renderScreen(getGameElement(setTime(data, 30)));
   } else {
     renderScreen(getStatsElement(initStats(data)));

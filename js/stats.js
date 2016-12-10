@@ -1,6 +1,6 @@
 import getElementFromTemplate from './getElementFromTemplate';
 import {headerBack} from './header-back';
-import {gameResultTitle} from './data/stats-utils';
+import {gameResultTitle, extraTitle} from './data/stats-utils';
 
 export default (result) => {
   const content = `<div class="result">
@@ -19,7 +19,7 @@ export default (result) => {
         ${result.extras.map((extra) => `
           <tr>
             <td></td>
-            <td class="result__extra">${extra.title}</td>
+            <td class="result__extra">${extraTitle.get(extra.type)}</td>
             <td class="result__extra">${extra.amount}&nbsp;<span class='stats__result stats__result--${extra.type}'></span></td>
             <td class="result__points">×&nbsp;50</td>
             <td class="result__total">${extra.total}</td>
