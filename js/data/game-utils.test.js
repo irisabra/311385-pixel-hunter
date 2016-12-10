@@ -44,10 +44,19 @@ describe('Game utils', () => {
     it('should return `false` if lives is `3`', () => {
       assert.equal(isGameOver(initialGame), false);
     });
+    it('should return `true` if lives is `0`', () => {
+      const game = Object.assign({}, initialGame, {lives: 0});
+      assert.equal(isGameOver(game), true);
+    });
   });
   describe('initGame', () => {
     it('should set game correctly', () => {
       assert.deepEqual(initGame(initialGame), initialGame);
+    });
+    it('should not change original game if copy changed', () => {
+      let copy = initGame(initialGame);
+      copy.lives = 0;
+      assert.notDeepEqual(copy, initialGame);
     });
   });
 

@@ -50,23 +50,20 @@ export const calculateScore = (answers, lives) => {
 };
 
 export const calculateTotalScoreWithExtras = (total, extras) => {
-  return extras.reduce((prev, curr) => {
-    return prev + curr.total;
-  }, total);
+  return extras.reduce((prev, curr) => prev + curr.total, total);
 };
 
 export const addLivesExtra = (extras, lives) =>{
   if (lives === 0) {
     return extras;
   }
-  const result = extras.concat([
+  return extras.concat([
     {
       type: ExtraType.LIVES,
       amount: lives,
       total: lives * 50
     }
   ]);
-  return result;
 };
 
 export const addFastExtra = (answers, extras, lives) => {
@@ -77,12 +74,11 @@ export const addFastExtra = (answers, extras, lives) => {
   if (fastAnswers.length === 0) {
     return extras;
   }
-  const result = extras.concat([{
+  return extras.concat([{
     type: ExtraType.FAST,
     amount: fastAnswers.length,
     total: fastAnswers.length * 50
   }]);
-  return result;
 };
 
 export const addSlowExtra = (answers, extras, lives) => {
@@ -93,12 +89,11 @@ export const addSlowExtra = (answers, extras, lives) => {
   if (slowAnswers.length === 0) {
     return extras;
   }
-  const result = extras.concat([{
+  return extras.concat([{
     type: ExtraType.SLOW,
     amount: slowAnswers.length,
     total: slowAnswers.length * -50
   }]);
-  return result;
 };
 
 export const initStats = (data) => {
