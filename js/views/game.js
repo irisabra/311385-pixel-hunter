@@ -12,24 +12,23 @@ import gameModel from '../data/game-model';
 export default class GameView extends AbstractView {
   constructor(data) {
     super();
-    this.levelType = gameModel.state.questions[gameModel.state.level].type;
-    this.header = new GameHeaderView(gameModel.state);
+    const currentLevel = gameModel.state.level;
+    this.levelType = gameModel.state.questions[currentLevel].type;
+    this.header = new GameHeaderView();
 
     this._interval = null;
+    this.setTimer();
   }
 
   getMarkup() {
-
-    this.setTimer();
-
     const questionsTemplate = (images, answers) => images.map((image, index) =>
-      `<div class="game__option" data-type="${image.mediaType}">
-        <img src="${image.path}" alt="${image.description}" width="${image.width}" height="${image.height}">
-        ${answers.map((answer) => `
-        <label class="game__answer game__answer--${answer.value}">
-          <input name="question-${index}" type="radio" value="${answer.value}">
-          <span>${answer.text}</span>
-        </label>`).join('')}
+    `<div class="game__option" data-type="${image.mediaType}">
+    <img src="${image.path}" alt="${image.description}" width="${image.width}" height="${image.height}">
+    ${answers.map((answer) => `
+      <label class="game__answer game__answer--${answer.value}">
+      <input name="question-${index}" type="radio" value="${answer.value}">
+      <span>${answer.text}</span>
+      </label>`).join('')}
       </div>`
     ).join('');
 
@@ -42,7 +41,7 @@ export default class GameView extends AbstractView {
       return levelContent[type];
     };
 
-    return `<header class="header">${this.header.getMarkup()}</header>
+    return `${this.header.getMarkup()}
     <div class="game">
     <p class="game__task">${gameModel.state.questions[gameModel.state.level].task}</p>
     ${getLevelContent(gameModel.state.questions[gameModel.state.level], gameModel.state.questions[gameModel.state.level].type)}
@@ -59,45 +58,16 @@ export default class GameView extends AbstractView {
       'game-3': 'game__option'
     };
 
-    const answersIsCorrect = (images, answers) => {
-      return images.every((item, index) => {
-        let answer = answers.find((ans) => ans.name === `question-${index}`);
-        return item.mediaType === answer.value;
-      });
-    };
-
-    const onAnswerGameOne = (element, container, data ) => {
-      const radios = container.querySelectorAll('input[type="radio"]:checked');
-      if (radios.length < data.questions[data.level].images.length) {
-        return;
-      }
-      let checkedAnswers = [];
-      for (const radio of radios) {
-        checkedAnswers.push({
-          name: radio.name,
-          value: radio.value
-        });
-      }
-      const isCorrect = answersIsCorrect(data.questions[data.level].images, checkedAnswers);
-      this.changeLevel(isCorrect ? checkAnswerSpeed(data.time) : AnswerType.WRONG);
-    };
-
-    const onAnswerGameThree = (element, container, data) => {
-      const type = element.getAttribute('data-type');
-      const isCorrect = (type === data.questions[data.level].mediaType);
-      this.changeLevel(isCorrect ? checkAnswerSpeed(data.time) : AnswerType.WRONG);
-    };
-
     const answerHandler = {
-      'game-1': onAnswerGameOne,
-      'game-2': onAnswerGameOne,
-      'game-3': onAnswerGameThree
+      'game-1': this.onAnswerGameOne,
+      'game-2': this.onAnswerGameOne,
+      'game-3': this.onAnswerGameThree
     };
 
     answersBlock.onclick = (e) => {
       const answer = e.target.closest(`.${answerElementClass[this.levelType]}`);
       if (answer) {
-        answerHandler[this.levelType](answer, answersBlock, gameModel.state);
+        answerHandler[this.levelType].bind(this)(answer, answersBlock);
       }
     };
   }
@@ -119,13 +89,10 @@ export default class GameView extends AbstractView {
 
   changeLevel(answerType) {
     gameModel.setAnswer(answerType);
-
     if (answerType === AnswerType.WRONG) {
       gameModel.decrementLives();
     }
-
     gameModel.nextLevel();
-
     this.clearTimer();
     if (gameModel.state.level < gameModel.state.questions.length && !gameModel.isOver()) {
       gameModel.initLevelTime();
@@ -136,9 +103,36 @@ export default class GameView extends AbstractView {
   }
 
   updateHeader() {
-    const headerEl = this.element.querySelector('.header');
-    const header = new GameHeaderView(gameModel.state);
-    headerEl.innerHTML = header.getMarkup();
-    this.header = header;
+    const headerEl = this.element.firstChild;
+    this.header.update(gameModel.state);
+    headerEl.parentNode.replaceChild(this.header.element, headerEl);
+  }
+
+  onAnswerGameOne(element, container) {
+    const radios = container.querySelectorAll('input[type="radio"]:checked');
+    if (radios.length < gameModel.state.questions[gameModel.state.level].images.length) {
+      return;
+    }
+    let checkedAnswers = [];
+    for (const radio of radios) {
+      checkedAnswers.push({
+        name: radio.name,
+        value: radio.value
+      });
+    }
+    const isAnswerCorrect = (images, answers) => {
+      return images.every((item, index) => {
+        let answer = answers.find((ans) => ans.name === `question-${index}`);
+        return item.mediaType === answer.value;
+      });
+    };
+    const isCorrect = isAnswerCorrect(gameModel.state.questions[gameModel.state.level].images, checkedAnswers);
+    this.changeLevel(isCorrect ? checkAnswerSpeed(gameModel.state.time) : AnswerType.WRONG);
+  }
+
+  onAnswerGameThree(element, container) {
+    const type = element.getAttribute('data-type');
+    const isCorrect = (type === gameModel.state.questions[gameModel.state.level].mediaType);
+    this.changeLevel(isCorrect ? checkAnswerSpeed(gameModel.state.time) : AnswerType.WRONG);
   }
 }
