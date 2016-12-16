@@ -1,4 +1,3 @@
-import getIntroElement from './views/intro';
-import renderScreen from './renderScreen';
+import Application from './application';
 
-renderScreen(getIntroElement());
+Application.showIntro();

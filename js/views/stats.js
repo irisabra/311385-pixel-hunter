@@ -1,12 +1,19 @@
+import Application from '../application';
 import AbstractView from '../view';
-import HeaderBackView from './header-back';
-import {gameResultTitle, extraTitle} from '../data/stats-utils';
+import HeaderView from './header';
+import {gameResultTitle, extraTitle, initStats} from '../data/stats-utils';
 
 export default class StatsView extends AbstractView {
-  constructor(statsData) {
+  constructor(state, onRestart) {
     super();
-    this.stats = statsData;
-    this.header = new HeaderBackView();
+    this.stats = initStats(state);
+    this.header = new HeaderView();
+
+    this.header.onBack = () => {
+      onRestart();
+      Application.showRules();
+    };
+    this.element.insertBefore(this.header.element, this.element.firstChild);
   }
   getMarkup() {
     const content = `<div class="result">
@@ -35,8 +42,7 @@ export default class StatsView extends AbstractView {
           </tr>
         </table>
     </div>`;
-    let article = `<header class="header">${this.header.getMarkup()}</header> ${content}`;
 
-    return article;
+    return content;
   }
 }

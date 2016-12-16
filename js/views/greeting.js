@@ -1,6 +1,5 @@
-import getRulesView from './rules';
-import renderScreen from '../renderScreen';
 import AbstractView from '../view';
+import Application from '../application';
 
 class GreetingView extends AbstractView {
   getMarkup() {
@@ -22,7 +21,7 @@ class GreetingView extends AbstractView {
   bindHandlers() {
     this.element.querySelector('.greeting__continue').onclick = (e) => {
       e.preventDefault();
-      renderScreen(getRulesView());
+      Application.showRules();
     };
   }
 }
