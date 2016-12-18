@@ -59,5 +59,5 @@ export const isGameOver = (game) => {
 };
 
 export const initGame = (game) => {
-  return Object.assign({}, game);
+  return JSON.parse(JSON.stringify(game));
 };

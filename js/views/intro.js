@@ -1,5 +1,4 @@
-import renderScreen from '../renderScreen';
-import getGreetingView from './greeting';
+import Application from '../application';
 import AbstractView from '../view';
 
 class IntroView extends AbstractView {
@@ -15,7 +14,7 @@ class IntroView extends AbstractView {
     const asterisk = this.element.querySelector('.intro__asterisk');
     asterisk.onclick = (e) => {
       e.preventDefault();
-      renderScreen(getGreetingView());
+      Application.showGreeting();
     };
   }
 }

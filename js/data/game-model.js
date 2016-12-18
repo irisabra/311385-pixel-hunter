@@ -8,6 +8,7 @@ class GameModel {
   get state() {
     return this._state;
   }
+
   initLevelTime() {
     this._state = setTime(this._state, 30);
   }

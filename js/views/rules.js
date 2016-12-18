@@ -1,10 +1,15 @@
 import AbstractView from '../view';
-import GameView from './game';
-import renderScreen from '../renderScreen';
-import HeaderBackView from './header-back';
+import Application from '../application';
+import HeaderView from './header';
 
 
 class RulesView extends AbstractView {
+  constructor() {
+    super();
+    this.header = new HeaderView();
+    this.header.onBack = () => Application.showIntro();
+    this.element.insertBefore(this.header.element, this.element.firstChild);
+  }
   getMarkup() {
     const content = `<div class="rules  central--none">
     <h1 class="rules__title">Правила</h1>
@@ -22,7 +27,7 @@ class RulesView extends AbstractView {
     </form>
     </div>`;
 
-    return `<header class="header">${new HeaderBackView().getMarkup()}</header> ${content}`;
+    return content;
   }
 
   bindHandlers() {
@@ -39,9 +44,10 @@ class RulesView extends AbstractView {
 
     rulesSubmit.onclick = (e) => {
       e.preventDefault();
-      renderScreen(new GameView().element);
+      Application.showGame();
     };
   }
+
 }
 
 export default () => new RulesView().element;
