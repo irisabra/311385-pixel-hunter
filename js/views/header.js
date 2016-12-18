@@ -4,7 +4,7 @@ export default class HeaderView extends AbstractView {
   constructor(data) {
     super();
     this.state = data;
-    this.showGameHeader = data ? true : false;
+    this.showGameHeader = Boolean(data);
   }
 
   set onBack(handler) {

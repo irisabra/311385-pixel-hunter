@@ -1,7 +1,7 @@
 import getIntroView from './views/intro';
 import getGreetingView from './views/greeting';
 import getRulesView from './views/rules';
-import getGameView from './views/game';
+import getGameView from './game-presenter';
 import StatsView from './views/stats';
 
 const main = document.getElementById('main');

@@ -1,8 +1,8 @@
-import Application from '../application';
-import {AnswerType} from '../data/game-data';
-import HeaderView from './header';
-import GameLevelView from './game-level';
-import gameModel from '../data/game-model';
+import Application from './application';
+import {AnswerType} from './data/game-data';
+import HeaderView from './views/header';
+import GameLevelView from './views/game-level';
+import gameModel from './data/game-model';
 
 
 class GamePresenter {

@@ -5,9 +5,9 @@ import {checkAnswerSpeed} from '../data/game-utils';
 
 
 export default class GameLevelView extends AbstractView {
-  constructor(data) {
+  constructor(state) {
     super();
-    this.state = data;
+    this.state = state;
     this.currentQuestion = this.state.questions[this.state.level];
   }
 
@@ -61,7 +61,7 @@ export default class GameLevelView extends AbstractView {
     answersBlock.onclick = (e) => {
       const answer = e.target.closest(`.${answerElementClass[this.currentQuestion.type]}`);
       if (answer) {
-        answerHandler[this.currentQuestion.type].bind(this)(answer, answersBlock);
+        answerHandler[this.currentQuestion.type].call(this, answer, answersBlock);
       }
     };
   }
