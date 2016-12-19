@@ -6,7 +6,8 @@ import gameModel from './data/game-model';
 
 
 class GamePresenter {
-  constructor() {
+  constructor(questionsData) {
+    gameModel.initQuestionsData = questionsData;
     this.header = new HeaderView(gameModel.state);
     this.header.onBack = () => {
       this.exit();
@@ -76,9 +77,8 @@ class GamePresenter {
 
 }
 
-const game = new GamePresenter();
-
-export default () => {
+export default (questionsData) => {
+  const game = new GamePresenter(questionsData);
   game.start();
   return game.root;
 };

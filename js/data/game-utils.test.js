@@ -1,5 +1,6 @@
 import assert from 'assert';
 import {initialGame, setTime, setLives, setLevel, setAnswer, isGameOver, initGame} from './game-utils';
+import {questionsData} from './game-data';
 
 describe('Game utils', () => {
   describe('setTime', () => {
@@ -26,7 +27,8 @@ describe('Game utils', () => {
   });
   describe('setLevel', () => {
     it('should set level', () => {
-      assert.equal(setLevel(initialGame, 8).level, 8);
+      const game = Object.assign({}, initialGame, {questions: questionsData});
+      assert.equal(setLevel(game, 8).level, 8);
     });
     it('should throws an error if negative value passed', () => {
       assert.throws(() => setLevel(initialGame, -1));
