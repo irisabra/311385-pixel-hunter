@@ -9,6 +9,10 @@ class GameModel {
     return this._state;
   }
 
+  set initQuestionsData(questionsData) {
+    this._state.questions = questionsData;
+    this._state.answers = Array.from(new Array(questionsData.length), () => 'unknown');
+  }
   initLevelTime() {
     this._state = setTime(this._state, 30);
   }

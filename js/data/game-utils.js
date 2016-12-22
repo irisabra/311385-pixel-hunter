@@ -1,11 +1,22 @@
-import {questionsData, AnswerType} from './game-data';
+import {AnswerType} from './game-data';
+
+export const QuestionType = {
+  TWO_OF_TWO: 'two-of-two',
+  TINDER_LIKE: 'tinder-like',
+  ONE_OF_THREE: 'one-of-three'
+};
+
+export const MediaType = {
+  PAINTING: 'painting',
+  PHOTO: 'photo'
+};
 
 export const initialGame = {
   time: 30,
   lives: 3,
   level: 0,
-  questions: questionsData,
-  answers: Array.from(new Array(questionsData.length), () => 'unknown')
+  questions: [],
+  answers: []
 };
 
 export const setTime = (game, time) => {

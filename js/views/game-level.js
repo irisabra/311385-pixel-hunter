@@ -1,7 +1,8 @@
 import AbstractView from '../view';
 import {AnswerType} from '../data/game-data';
 import GameStatsView from './game-stats';
-import {checkAnswerSpeed} from '../data/game-utils';
+import {checkAnswerSpeed, QuestionType, MediaType} from '../data/game-utils';
+import imageLoader from '../image-loader/image-loader.js';
 
 
 export default class GameLevelView extends AbstractView {
@@ -9,6 +10,7 @@ export default class GameLevelView extends AbstractView {
     super();
     this.state = state;
     this.currentQuestion = this.state.questions[this.state.level];
+    this.resizeImages();
   }
 
   set onAnswer(handler) {
@@ -16,24 +18,24 @@ export default class GameLevelView extends AbstractView {
   }
 
   getMarkup() {
-    const questionsTemplate = (images, answers) => images.map((image, index) =>
+    const questionsTemplate = (images, questionType) => images.map((image, index) =>
     `<div class="game__option" data-type="${image.mediaType}">
-    <img src="${image.path}" alt="${image.description}" width="${image.width}" height="${image.height}">
-    ${answers.map((answer) => `
-      <label class="game__answer game__answer--${answer.value}">
-      <input name="question-${index}" type="radio" value="${answer.value}">
-      <span>${answer.text}</span>
-      </label>`).join('')}
-      </div>`
-    ).join('');
+    <img src="${image.url}" alt="Image ${index + 1}" width="${image.width}" height="${image.height}">
+    ${questionType === QuestionType.ONE_OF_THREE ? '' : Object.values(MediaType).map((value) => `
+    <label class="game__answer game__answer--${value}">
+    <input name="question-${index}" type="radio" value="${value}">
+    <span>${value}</span>
+    </label>`).join('')}
+    </div>`).join('');
 
     const getLevelContent = (levelData, type) => {
-      const levelContent = {
-        'game-1': `<form class="game__content">${questionsTemplate(levelData.images, levelData.answers)}</form>`,
-        'game-2': `<form class="game__content game__content--wide">${questionsTemplate(levelData.images, levelData.answers)}</form>`,
-        'game-3': `<form class="game__content game__content--triple">${questionsTemplate(levelData.images, levelData.answers)}</form>`
-      };
-      return levelContent[type];
+
+      const levelContent = new Map([
+        [QuestionType.TWO_OF_TWO, `<form class="game__content">${questionsTemplate(levelData.images, type)}</form>`],
+        [QuestionType.TINDER_LIKE, `<form class="game__content game__content--wide">${questionsTemplate(levelData.images, type)}</form>`],
+        [QuestionType.ONE_OF_THREE, `<form class="game__content game__content--triple">${questionsTemplate(levelData.images, type)}</form>`]
+      ]);
+      return levelContent.get(type);
     };
 
     return `<div class="game">
@@ -46,22 +48,22 @@ export default class GameLevelView extends AbstractView {
   bindHandlers() {
     const answersBlock = this.element.querySelector('.game__content');
 
-    const answerElementClass = {
-      'game-1': 'game__answer',
-      'game-2': 'game__answer',
-      'game-3': 'game__option'
-    };
+    const answerElementClass = new Map([
+      [QuestionType.TWO_OF_TWO, 'game__answer'],
+      [QuestionType.TINDER_LIKE, 'game__answer'],
+      [QuestionType.ONE_OF_THREE, 'game__option']
+    ]);
 
-    const answerHandler = {
-      'game-1': this.onAnswerGameOne,
-      'game-2': this.onAnswerGameOne,
-      'game-3': this.onAnswerGameThree
-    };
+    const answerHandler = new Map([
+      [QuestionType.TWO_OF_TWO, this.onAnswerGameOne],
+      [QuestionType.TINDER_LIKE, this.onAnswerGameOne],
+      [QuestionType.ONE_OF_THREE, this.onAnswerGameThree]
+    ]);
 
     answersBlock.onclick = (e) => {
-      const answer = e.target.closest(`.${answerElementClass[this.currentQuestion.type]}`);
+      const answer = e.target.closest(`.${answerElementClass.get(this.currentQuestion.type)}`);
       if (answer) {
-        answerHandler[this.currentQuestion.type].call(this, answer, answersBlock);
+        answerHandler.get(this.currentQuestion.type).call(this, answer, answersBlock);
       }
     };
   }
@@ -94,10 +96,23 @@ export default class GameLevelView extends AbstractView {
     this._onAnswer(isCorrect ? checkAnswerSpeed(this.state.time) : AnswerType.WRONG);
   }
 
+  resizeImages() {
+    const images = this.element.querySelectorAll('img');
+    let index = 0;
+    for (let image of images) {
+      imageLoader(image).load({
+        url: this.currentQuestion.images[index].url,
+        width: this.currentQuestion.images[index].width,
+        height: this.currentQuestion.images[index].height
+      });
+      index++;
+    }
+  }
   update(state) {
     this.state = state;
     this.currentQuestion = this.state.questions[this.state.level];
     this.element.innerHTML = this.getMarkup();
     this.bindHandlers();
+    this.resizeImages();
   }
 }
