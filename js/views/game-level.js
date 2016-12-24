@@ -1,15 +1,14 @@
 import AbstractView from '../view';
-import {AnswerType} from '../data/game-data';
 import GameStatsView from './game-stats';
-import {checkAnswerSpeed, QuestionType, MediaType} from '../data/game-utils';
+import {checkAnswerSpeed, QuestionType, MediaType, AnswerType} from '../data/game-utils';
 import imageLoader from '../image-loader/image-loader.js';
 
 
 export default class GameLevelView extends AbstractView {
   constructor(state) {
     super();
-    this.state = state;
-    this.currentQuestion = this.state.questions[this.state.level];
+    this._state = state;
+    this._currentQuestion = this._state.questions[this._state.level];
     this.resizeImages();
   }
 
@@ -39,9 +38,9 @@ export default class GameLevelView extends AbstractView {
     };
 
     return `<div class="game">
-    <p class="game__task">${this.currentQuestion.task}</p>
-    ${getLevelContent(this.currentQuestion, this.currentQuestion.type)}
-    ${new GameStatsView(this.state.answers).getMarkup()}
+    <p class="game__task">${this._currentQuestion.task}</p>
+    ${getLevelContent(this._currentQuestion, this._currentQuestion.type)}
+    ${new GameStatsView(this._state.answers).getMarkup()}
     </div>`;
   }
 
@@ -61,16 +60,16 @@ export default class GameLevelView extends AbstractView {
     ]);
 
     answersBlock.onclick = (e) => {
-      const answer = e.target.closest(`.${answerElementClass.get(this.currentQuestion.type)}`);
+      const answer = e.target.closest(`.${answerElementClass.get(this._currentQuestion.type)}`);
       if (answer) {
-        answerHandler.get(this.currentQuestion.type).call(this, answer, answersBlock);
+        answerHandler.get(this._currentQuestion.type).call(this, answer, answersBlock);
       }
     };
   }
 
   onAnswerGameOne(element, container) {
     const radios = container.querySelectorAll('input[type="radio"]:checked');
-    if (radios.length < this.currentQuestion.images.length) {
+    if (radios.length < this._currentQuestion.images.length) {
       return;
     }
     const checkedAnswers = [];
@@ -86,14 +85,14 @@ export default class GameLevelView extends AbstractView {
         return item.mediaType === answer.value;
       });
     };
-    const isCorrect = isAnswerCorrect(this.currentQuestion.images, checkedAnswers);
-    this._onAnswer(isCorrect ? checkAnswerSpeed(this.state.time) : AnswerType.WRONG);
+    const isCorrect = isAnswerCorrect(this._currentQuestion.images, checkedAnswers);
+    this._onAnswer(isCorrect ? checkAnswerSpeed(this._state.time) : AnswerType.WRONG);
   }
 
   onAnswerGameThree(element, container) {
     const type = element.getAttribute('data-type');
-    const isCorrect = (type === this.currentQuestion.mediaType);
-    this._onAnswer(isCorrect ? checkAnswerSpeed(this.state.time) : AnswerType.WRONG);
+    const isCorrect = (type === this._currentQuestion.mediaType);
+    this._onAnswer(isCorrect ? checkAnswerSpeed(this._state.time) : AnswerType.WRONG);
   }
 
   resizeImages() {
@@ -101,16 +100,16 @@ export default class GameLevelView extends AbstractView {
     let index = 0;
     for (let image of images) {
       imageLoader(image).load({
-        url: this.currentQuestion.images[index].url,
-        width: this.currentQuestion.images[index].width,
-        height: this.currentQuestion.images[index].height
+        url: this._currentQuestion.images[index].url,
+        width: this._currentQuestion.images[index].width,
+        height: this._currentQuestion.images[index].height
       });
       index++;
     }
   }
   update(state) {
-    this.state = state;
-    this.currentQuestion = this.state.questions[this.state.level];
+    this._state = state;
+    this._currentQuestion = this._state.questions[this._state.level];
     this.element.innerHTML = this.getMarkup();
     this.bindHandlers();
     this.resizeImages();

@@ -1,4 +1,10 @@
-import {AnswerType} from './game-data';
+export const AnswerType = {
+  UNKNOWN: 'unknown',
+  WRONG: 'wrong',
+  SLOW: 'slow',
+  FAST: 'fast',
+  CORRECT: 'correct'
+};
 
 export const QuestionType = {
   TWO_OF_TWO: 'two-of-two',

@@ -1,5 +1,5 @@
 import Application from './application';
-import {AnswerType} from './data/game-data';
+import {AnswerType} from './data/game-utils';
 import HeaderView from './views/header';
 import GameLevelView from './views/game-level';
 import gameModel from './data/game-model';
@@ -53,9 +53,8 @@ class GamePresenter {
       gameModel.decrementLives();
     }
     gameModel.nextLevel();
-
+    this.clearTimer();
     if (gameModel.state.level < gameModel.state.questions.length && !gameModel.isOver()) {
-      this.clearTimer();
       gameModel.initLevelTime();
       this.updateContent();
       this.updateHeader();
