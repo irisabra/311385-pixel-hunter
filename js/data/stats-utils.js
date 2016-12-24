@@ -1,4 +1,4 @@
-import {AnswerType} from './game-data';
+import {AnswerType} from './game-utils';
 
 export const initialStats = {
   status: 0,

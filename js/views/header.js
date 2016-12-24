@@ -3,8 +3,8 @@ import AbstractView from '../view';
 export default class HeaderView extends AbstractView {
   constructor(data) {
     super();
-    this.state = data;
-    this.showGameHeader = Boolean(data);
+    this._state = data;
+    this._showGameHeader = Boolean(data);
   }
 
   set onBack(handler) {
@@ -27,7 +27,7 @@ export default class HeaderView extends AbstractView {
 
     return `<header class="header">
     ${headerBack}
-    ${this.showGameHeader ? gameHeader(this.state) : ''}
+    ${this._showGameHeader ? gameHeader(this._state) : ''}
     </header>`;
   }
 
@@ -39,7 +39,7 @@ export default class HeaderView extends AbstractView {
   }
 
   update(state) {
-    this.state = state;
+    this._state = state;
     this.element.innerHTML = this.getMarkup();
     this.bindHandlers();
   }

@@ -6,9 +6,9 @@ import HeaderView from './header';
 class RulesView extends AbstractView {
   constructor() {
     super();
-    this.header = new HeaderView();
-    this.header.onBack = () => Application.showIntro();
-    this.element.insertBefore(this.header.element, this.element.firstChild);
+    this._header = new HeaderView();
+    this._header.onBack = () => Application.showIntro();
+    this.element.insertBefore(this._header.element, this.element.firstChild);
   }
   getMarkup() {
     const content = `<div class="rules  central--none">

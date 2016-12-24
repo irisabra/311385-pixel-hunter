@@ -43,7 +43,7 @@ gulp.task('style', function () {
 });
 
 gulp.task('scripts', function () {
-  return gulp.src('js/**/*.js')
+  return gulp.src(['js/**/*.js', '!js/**/*.test.js'])
     .pipe(plumber())
     .pipe(webpack({
       devtools: 'source-map',

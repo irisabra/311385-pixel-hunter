@@ -86,6 +86,11 @@
   .game__option {
     width: 705px;
     height: 455px;
+
+    img {
+      max-height: 100%;
+      width: auto;
+    }
   }
 
   .game__answer {
@@ -106,6 +111,7 @@
 
   width: 304px;
   height: 455px;
+  overflow: hidden;
 
   &:hover {
     border-color: #df4e4e;

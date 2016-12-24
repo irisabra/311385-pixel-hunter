@@ -1,6 +1,5 @@
 import assert from 'assert';
-import {AnswerType} from './game-data';
-import {initialGame} from './game-utils';
+import {initialGame, AnswerType} from './game-utils';
 import {GameResultStatusType, ExtraType, calculateStatusResult, calculateScore, calculateTotalScoreWithExtras, addLivesExtra, addFastExtra, addSlowExtra, initStats} from './stats-utils';
 
 const answers = Array.from(new Array(10), () => AnswerType.CORRECT);
