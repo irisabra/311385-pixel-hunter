@@ -21,43 +21,50 @@ require('babel-register');
 
 gulp.task('style', function () {
   gulp.src('sass/style.scss')
-    .pipe(plumber())
-    .pipe(sass())
-    .pipe(postcss([
-      autoprefixer({
-        browsers: [
-          'last 1 version',
-          'last 2 Chrome versions',
-          'last 2 Firefox versions',
-          'last 2 Opera versions',
-          'last 2 Edge versions'
-        ]
-      }),
-      mqpacker({sort: true})
-    ]))
-    .pipe(gulp.dest('build/css'))
-    .pipe(server.stream())
-    .pipe(minify())
-    .pipe(rename('style.min.css'))
-    .pipe(gulp.dest('build/css'));
+  .pipe(plumber())
+  .pipe(sass())
+  .pipe(postcss([
+    autoprefixer({
+      browsers: [
+        'last 1 version',
+        'last 2 Chrome versions',
+        'last 2 Firefox versions',
+        'last 2 Opera versions',
+        'last 2 Edge versions'
+      ]
+    }),
+    mqpacker({sort: true})
+  ]))
+  .pipe(gulp.dest('build/css'))
+  .pipe(server.stream())
+  .pipe(minify())
+  .pipe(rename('style.min.css'))
+  .pipe(gulp.dest('build/css'));
 });
 
 gulp.task('scripts', function () {
   return gulp.src(['js/**/*.js', '!js/**/*.test.js'])
-    .pipe(plumber())
-    .pipe(webpack({
-      devtools: 'source-map',
-      module: {
-        loaders: [
-          { test: /\.js$/, loader: 'babel-loader' },
-        ],
-      },
-      output:{
-        filename: 'main.js'
-      }
+  .pipe(plumber())
+  .pipe(webpack({
+    devtools: 'source-map',
+    module: {
+      loaders: [
+        { test: /\.js$/,
+          loader: 'babel-loader',
+          exclude: /node_modules/,
+          query: {
+            presets: ['es2015'],
+            plugins: ['transform-runtime']
+          }
+        },
+      ],
+    },
+    output:{
+      filename: 'main.js'
+    }
 
   }))
-    .pipe(gulp.dest('build/js/'));
+  .pipe(gulp.dest('build/js/'));
 });
 
 gulp.task('test', function () {
@@ -65,18 +72,18 @@ gulp.task('test', function () {
 
 gulp.task('imagemin', ['copy'], function () {
   return gulp.src('build/img/**/*.{jpg,png,gif}')
-    .pipe(imagemin([
-      imagemin.optipng({optimizationLevel: 3}),
-      imagemin.jpegtran({progressive: true})
-    ]))
-    .pipe(gulp.dest('build/img'));
+  .pipe(imagemin([
+    imagemin.optipng({optimizationLevel: 3}),
+    imagemin.jpegtran({progressive: true})
+  ]))
+  .pipe(gulp.dest('build/img'));
 });
 
 
 gulp.task('copy-html', function () {
   return gulp.src('*.html')
-    .pipe(gulp.dest('build'))
-    .pipe(server.stream());
+  .pipe(gulp.dest('build'))
+  .pipe(server.stream());
 });
 
 gulp.task('copy', ['copy-html', 'scripts', 'style'], function () {
@@ -84,7 +91,7 @@ gulp.task('copy', ['copy-html', 'scripts', 'style'], function () {
     'fonts/**/*.{woff,woff2}',
     'img/*.*'
   ], {base: '.'})
-    .pipe(gulp.dest('build'));
+  .pipe(gulp.dest('build'));
 });
 
 gulp.task('clean', function () {

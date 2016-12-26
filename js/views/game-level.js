@@ -22,7 +22,7 @@ export default class GameLevelView extends AbstractView {
     <img src="${image.url}" alt="Image ${index + 1}" width="${image.width}" height="${image.height}">
     ${questionType === QuestionType.ONE_OF_THREE ? '' : Object.values(MediaType).map((value) => `
     <label class="game__answer game__answer--${value}">
-    <input name="question-${index}" type="radio" value="${value}">
+    <input name="question-${index }" type="radio" value="${value}">
     <span>${value}</span>
     </label>`).join('')}
     </div>`).join('');
@@ -60,9 +60,14 @@ export default class GameLevelView extends AbstractView {
     ]);
 
     answersBlock.onclick = (e) => {
-      const answer = e.target.closest(`.${answerElementClass.get(this._currentQuestion.type)}`);
-      if (answer) {
-        answerHandler.get(this._currentQuestion.type).call(this, answer, answersBlock);
+      let target = e.target;
+
+      while (target !== answersBlock) {
+        if (target.className.indexOf(answerElementClass.get(this._currentQuestion.type)) > -1) {
+          answerHandler.get(this._currentQuestion.type).call(this, target, answersBlock);
+          return;
+        }
+        target = target.parentNode;
       }
     };
   }
@@ -81,8 +86,8 @@ export default class GameLevelView extends AbstractView {
     }
     const isAnswerCorrect = (images, answers) => {
       return images.every((item, index) => {
-        let answer = answers.find((ans) => ans.name === `question-${index}`);
-        return item.mediaType === answer.value;
+        const answer = answers.filter((ans) => ans.name === `question-${index}`);
+        return item.mediaType === answer[0].value;
       });
     };
     const isCorrect = isAnswerCorrect(this._currentQuestion.images, checkedAnswers);
@@ -111,7 +116,8 @@ export default class GameLevelView extends AbstractView {
     this._state = state;
     this._currentQuestion = this._state.questions[this._state.level];
     this.element.innerHTML = this.getMarkup();
-    this.bindHandlers();
     this.resizeImages();
+    this.bindHandlers();
+
   }
 }

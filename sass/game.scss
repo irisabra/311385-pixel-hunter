@@ -108,25 +108,29 @@
 
 .game__content--triple .game__option {
   cursor: pointer;
-
-  width: 304px;
-  height: 455px;
+  border: none;
+  width: 324px;
+  height: 475px;
   overflow: hidden;
 
-  &:hover {
-    border-color: #df4e4e;
+  img{
+    border: 10px solid transparent;
+    max-width: 304px;
+
+    &:hover {
+      border-color: #df4e4e;
+    }
+
+    &:active::after {
+      content: "";
+      position: absolute;
+
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      background-color: rgba(223, 78, 78, 0.4);
+    }
   }
-
-  &:active::after {
-    content: "";
-    position: absolute;
-
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    background-color: rgba(223, 78, 78, 0.4);
-  }
-
 }

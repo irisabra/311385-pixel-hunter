@@ -31,12 +31,6 @@ export const extraTitle = new Map([
   [ExtraType.SLOW, 'Штраф за медлительность:']
 ]);
 
-export const initialExtra = {
-  type: ExtraType.LIVES,
-  amount: 0,
-  total: 0
-};
-
 export const calculateStatusResult = (lives) => {
   return lives > 0 ? GameResultStatusType.WIN : GameResultStatusType.FAIL;
 };

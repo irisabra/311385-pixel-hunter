@@ -8,26 +8,24 @@ import gameModel from './data/game-model';
 class GamePresenter {
   constructor(questionsData) {
     gameModel.initQuestionsData = questionsData;
-    this.header = new HeaderView(gameModel.state);
-    this.header.onBack = () => {
+    this._header = new HeaderView(gameModel.state);
+    this._header.onBack = () => {
       this.exit();
       Application.showRules();
     };
 
-    this.content = new GameLevelView(gameModel.state);
-    this.content.onAnswer = this.changeLevel.bind(this);
+    this._content = new GameLevelView(gameModel.state);
+    this._content.onAnswer = this.changeLevel.bind(this);
 
     this.root = document.createElement('div');
-    this.root.appendChild(this.header.element);
-    this.root.appendChild(this.content.element);
+    this.root.appendChild(this._header.element);
+    this.root.appendChild(this._content.element);
 
     this._interval = null;
   }
   exit() {
     this.clearTimer();
     gameModel.restart();
-    this.updateHeader();
-    this.updateContent();
   }
   setTimer() {
     this._interval = setInterval(() => {
@@ -65,13 +63,13 @@ class GamePresenter {
   }
 
   updateHeader() {
-    this.header.update(gameModel.state);
-    this.root.replaceChild(this.header.element, this.header.element);
+    this._header.update(gameModel.state);
+    this.root.replaceChild(this._header.element, this._header.element);
   }
 
   updateContent() {
-    this.content.update(gameModel.state);
-    this.root.replaceChild(this.content.element, this.content.element);
+    this._content.update(gameModel.state);
+    this.root.replaceChild(this._content.element, this._content.element);
   }
 
 }
